@@ -1,0 +1,26 @@
+.product {
+  border: 1px solid black;
+  padding: 4rem;
+  margin: 2rem;
+  height: 220px;
+  width: 180px;
+}
+
+.image {
+  width: 150px;
+  height: 120px;
+}
+
+.add-to-cart-button {
+  background: linear-gradient(90deg, rgba(74,121,200,1) 0%, rgba(25,150,230,0.9922128885733981) 32%, rgb(25, 153, 235) 80%);
+  padding: 0.2rem 1rem;
+  color: white;
+  border: 0;
+}
+
+.remove-from-cart-button {
+  background-color: rgb(0, 133, 122);
+  padding: 0.2rem 1rem;
+  color: white;
+  border: 0;
+}

@@ -1,23 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CartComponent from "./components/CartComponent";
+import HomePageComponent from "./components/HomePageComponent";
+import HeaderComponent from "./components/HeaderComponent";
+import ECommerceContext from "./contexts/ECommerceContext";
 
 function App() {
+  const [products, setProducts] = useState([]);
+  const [displayProducts , setDisplayProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [filter , setFilter] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await axios.get("https://dummyjson.com/products");
+      setProducts(response.data.products);
+      console.log("product:",response.data.products)
+    };
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if(filter.length > 0 ){
+     setDisplayProducts(products.filter((item) => (filter.includes(item.category))));
+     console.log("Display product:",displayProducts);
+    }
+    else{
+    setDisplayProducts(products);
+    }
+  }, [filter , products]);
+
+  useEffect(() => {
+    console.log("Filter array: ",filter);
+  },[filter])
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <BrowserRouter>
+        <ECommerceContext.Provider
+          value={{ products, setProducts, cart, setCart ,displayProducts ,filter,  setFilter }}
         >
-          Learn React
-        </a>
-      </header>
+          <HeaderComponent />
+          <Routes className="routes">
+            <Route path="/" element={<HomePageComponent />} />
+            <Route path="/cart" element={<CartComponent />} />
+          </Routes>
+        </ECommerceContext.Provider>
+      </BrowserRouter>
     </div>
   );
 }
